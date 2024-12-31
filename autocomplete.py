@@ -27,11 +27,6 @@ class Autocomplete():
                 node.frequencyOfChar[char] += 1 # incrementing the freq.
                 node = node.children[char] # move to the next node.
             node.isEndOfTheWord = True # marking the end of the word
-
-    ''' For each word in the document start from the root. And for each char in the word, check if it is 
-        a child of the current node, if yes, increment the frequency of that char and move to the next node, 
-        otherwise, create a new node and set the frequency of that char to 0.
-        After the word is processed mark the last node as the end of the word.'''
     
 
     def suggest_random(self, prefix):
@@ -59,10 +54,6 @@ class Autocomplete():
                 queue.append((child, curr_word + ch))
         return suggestions
 
-    ''' In BFS we start from the last char of the given prefix. Then explore all the possible 
-        words that can be formed by checking next char from the queue. If find a complete word at any node, 
-        append it to the list of suggestions or else append the node to the queue while adding the curr_char to the 
-        prefix.'''
             
     #TODO for students!!!
     def suggest_dfs(self, prefix):
@@ -93,15 +84,6 @@ class Autocomplete():
         dfs(node, prefix)
         return suggestions
     
-    ''' For implementing DFS I have used recursive DFS. I have used a helper function which recursively calls 
-        itself for each child node, diving deeper into the tree. Once it reaches the end of a branch, it 
-        automatically backtracks and continues exploring other branches. And at each step, it checks if the 
-        current node is the end of a word, if yes, the word is added to the suggestions list. This process 
-        repeats until all possible words that start with the prefix have been found, and the complete list 
-        of suggestions is returned.'''
-    
-    ''' I've also implemented dfs using stack and i happened to notice that if we use recursion we got the 
-        words from left to right but if we use stack we got the words from right to left.'''
 
     #TODO for students!!!
     def suggest_ucs(self, prefix):
@@ -124,13 +106,3 @@ class Autocomplete():
                 cost = total_cost + (1/freq)
                 heapq.heappush(priority_queue, (cost, curr_word + ch, child))
         return suggestions
-    ''' For implementing UCS i did some changes in the function buildTree. I keep a track of the frequency 
-        of characters to get the path cost.
-        Then in the suggest_ucs, first i find the node that matches the last char of the prefix. Then, used
-        a priority queue (min-heap) to perform UCS. The queue stores a tuple of (cost, word, curr_node).
-        Then, while the queue is not empty:
-                deque the node with lowest cost,
-                check for word completion,
-                    if it is the end of the word append it to suggestions 
-                else, calculate the new cost and push the node to the queue.
-                return the list.'''
